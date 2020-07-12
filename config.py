@@ -2,7 +2,7 @@ class Config(object):
     """
     Default configuration
     """
-    SQLALCHEMY_DATABASE_URI = "postgresql://pitch:password@localhost:5432/pitch"
+    SQLALCHEMY_DATABASE_URI = "postgresql://admin:admin@localhost:5432/pitch"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # simple mde  configurations
     SIMPLEMDE_JS_IIFE = True

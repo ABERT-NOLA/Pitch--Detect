@@ -18,7 +18,7 @@ def load_user(user_id):
 
 
 class User(UserMixin, db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
     lastname = db.Column(db.String(255))
@@ -53,7 +53,7 @@ class Pitch(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     audio_url = db.Column(db.String)
     name = db.Column(db.String(50))
-    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     # pitch = Pitch()
     # you have access to pitch.owner
