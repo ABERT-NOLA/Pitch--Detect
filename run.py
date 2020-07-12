@@ -1,10 +1,6 @@
 from flask import Flask
 from flask import render_template
-from  flask_migrate import Migrate, MigrateCommand
-app = Flask(__name__)
-migrate = Migrate(app,db)
-manager.add_command('db',MigrateCommand)
-
+from app import app
 @app.route('/')
 def base():
     return render_template("base.html")
