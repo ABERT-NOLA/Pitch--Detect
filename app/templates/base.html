@@ -1,6 +1,11 @@
-{% extends 'bootstrap/base.html'%}
+{% extends 'bootstrap/base.html' %}
 
-<!-- Navbar block  --> 
+{% block styles %}
+    {{ super() }}
+
+{% endblock %}
+
+<!-- Navbar block  -->
 {% block navbar %}
     {% include 'navbar.html' %}
 {% endblock %}
