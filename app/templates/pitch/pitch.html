@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import 'macros.html' as macro %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-sm-4">
+                <a href="{{ url_for('main.update_pitch',id=pitch.id) }}" type="button" class="btn btn-primary">
+                    Edit Pitch
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>{{ pitch.name }}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ pitch.description }}</p>
+
+
+                        {% if pitch.audio_url %}
+                            <audio controls>
+                                <source src="{{ pitch.audio_url }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        {% else %}
+                            <p>No audio has been uploaded</p>
+                        {% endif %}
+                        {% if pitch.owner == current_user %}
+                            <form action="{{ url_for('main.pitch_audio',id=pitch.id) }}" method="post"
+                                  enctype="multipart/form-data">
+
+                                <input type="file" name="audio" class="form-control" required>
+                                <input type="submit">
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-8 col-md-offset-2">
+                <h4>Comments</h4>
+                {% if pitch.owner != current_user %}
+                    <div class="panel">
+                        <div class="panel-body">
+                            <form action="{{ url_for("main.new_review", id=pitch.id) }}" method="post">
+                                {{ reviewform.review(class_='form-control') }}
+                                {{ reviewform.submit(class_='btn btn-primary') }}
+                                {{ reviewform.hidden_tag() }}
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{ macro.displayReviews(reviews) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% macro displayPitch(pitch) %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{ pitch.name }}
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if pitch.description %}
+                        {{ pitch.description }}
+                    {% else %}
+                        No description provided
+                    {% endif %}
+                </div>
+                <div class="col-md-12">
+                    {% if pitch.audio_url %}
+                        <audio controls>
+                            <source src="{{ url_for('static',filename=pitch.audio_url) }}">
+                            Your browser does not support the audio element.
+                        </audio>
+                    {% else %}
+                        <p>No audio has been uploaded</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-2 col-sm-4">
+                    <a href="{{ url_for('main.update_pitch',id=pitch.id) }}" type="button" class="btn btn-primary">
+                        Edit Pitch
+                    </a>
+                </div>
+                <div class="col-sm-1"></div>
+                <div>
+                    <a href="{{ url_for('main.single_pitch',id=pitch.id) }}" type="button" class="btn btn-primary">
+                        Comments
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endmacro %}
+
+{% macro displayPitches(pitch_list) %}
+    <div class="row">
+        {% for pitch in pitch_list %}
+            <div class="col-sm-6">
+                {{ displayPitch(pitch) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro displayReviews(review_list) %}
+    {% for review in review_list %}
+        <div class="panel ">
+            <div class="panel-body">
+                <div class="col-sm-12">{{ review.pitch_review }}</div>
+                <div class="col-sm-2 col-sm-offset-10"> - <small>{{ review.user }}</small></div>
+            </div>
+        </div>
+    {% else %}
+        No reviews found.
+    {% endfor %}
+{% endmacro %}

@@ -9,8 +9,11 @@ class UpdateProfile(FlaskForm):
 
 
 class ReviewForm(FlaskForm):
-    title = StringField('Review title', validators=[DataRequired()])
-
     review = TextAreaField('Pitch review')
+    submit = SubmitField('Submit')
 
+
+class PitchForm(FlaskForm):
+    name = StringField('Pitch title', validators=[DataRequired()])
+    description = TextAreaField('Pitch description', validators=[DataRequired()])
     submit = SubmitField('Submit')

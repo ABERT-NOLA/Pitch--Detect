@@ -2,7 +2,7 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_uploads import configure_uploads, UploadSet, IMAGES
+from flask_uploads import configure_uploads, UploadSet, IMAGES, AUDIO
 
 from config import config_options
 
@@ -13,6 +13,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 
 photos = UploadSet('photos', IMAGES)
+audio = UploadSet('audio', AUDIO)
 
 
 def create_app(config_name):
@@ -28,6 +29,7 @@ def create_app(config_name):
     login_manager.init_app(app)
 
     configure_uploads(app, photos)
+    configure_uploads(app, audio)
 
     from .auth import auth as auth_blueprint
     from .main import main as main_blueprint

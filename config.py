@@ -9,6 +9,7 @@ class Config(object):
     SIMPLEMDE_USE_CDN = True
 
     UPLOADED_PHOTOS_DEST = 'app/static/uploads/photos'
+    UPLOADED_AUDIO_DEST = 'app/static/uploads/audio'
 
 
 class ProdConfig(Config):

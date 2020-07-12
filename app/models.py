@@ -57,13 +57,23 @@ class Pitch(db.Model):
     Pitch model
     """
     __tablename__ = 'pitch'
+
     id = db.Column(db.Integer, primary_key=True)
     audio_url = db.Column(db.String)
     name = db.Column(db.String(50))
+    description = db.Column(db.Text())
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     # pitch = Pitch()
     # you have access to pitch.owner
+    def __init__(self, name, description, owner_id):
+        self.name = name
+        self.description = description
+        self.owner_id = owner_id
+
+    def save_pitch(self):
+        db.session.add(self)
+        db.session.commit()
 
     def __repr__(self):
         return f'Pitch {self.name}'
@@ -90,9 +100,8 @@ class Review(db.Model):
     __tablename__ = 'review'
     all_reviews = []
 
-    def __init__(self, pitch_id, pitch_title, pitch_review, user_id):
+    def __init__(self, pitch_id, pitch_review, user_id):
         self.pitch_review = pitch_review
-        self.pitch_title = pitch_title
         self.pitch_id = pitch_id
         self.user_id = user_id
 
@@ -101,9 +110,6 @@ class Review(db.Model):
     pitch_review = db.Column(db.String)
     posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-
-    def save_review(self):
-        Review.all_reviews.append(self)
 
     @classmethod
     def clear_reviews(cls):
