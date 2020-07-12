@@ -16,10 +16,11 @@ class Pitch(db.Model):
     __tablename__ = 'pitch'
     id = db.Column(db.Integer,primary_key = True)
     filepath = db.Column(db.String(255))
+    name = db.Column(db.String(50))
     owner_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     # pitch = Pitch()
     # you have access to pitch.owner
 
 
     def __repr__(self):
-        return f'User {self.username}'
+        return f'Pitch {self.name}'
