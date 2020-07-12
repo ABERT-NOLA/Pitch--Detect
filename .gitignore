@@ -1,3 +1,4 @@
 .idea
 *.pyc
 virtual/
+app/static/uploads

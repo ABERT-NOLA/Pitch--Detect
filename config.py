@@ -8,7 +8,7 @@ class Config(object):
     SIMPLEMDE_JS_IIFE = True
     SIMPLEMDE_USE_CDN = True
 
-    UPLOADED_PHOTOS_DEST = 'app/static/photos'
+    UPLOADED_PHOTOS_DEST = 'app/static/uploads/photos'
 
 
 class ProdConfig(Config):
