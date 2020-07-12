@@ -19,7 +19,14 @@ def load_user(user_id):
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
+
+    def __init__(self, email, username, password):
+        self.password = password
+        self.email = email
+        self.username = username
+
     id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255))
     username = db.Column(db.String(255))
     lastname = db.Column(db.String(255))
     firstname = db.Column(db.String(255))
