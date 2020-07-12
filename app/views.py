@@ -7,8 +7,3 @@ def base():
 @app.route('/index')
 def index():
     return render_template("index.html") 
-
-@app.route('/login', methods=['GET', 'POST'])
-def login(): 
-    error = None 
-    return render_template('login.html', error=error) 
