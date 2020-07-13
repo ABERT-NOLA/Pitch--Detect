@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import 'macros.html' as macro %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="{{ url_for('main.update_category',id=category.id) }}" type="button" class="btn btn-primary">
+                    Edit Pitch Category
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Category <strong>{{ category.name }}</strong> Pitches</h4>
+            </div>
+        </div>
+        {{ macro.displayPitches(pitches) }}
+    </div>
+{% endblock %}

@@ -64,6 +64,7 @@ class Pitch(db.Model):
     audio_url = db.Column(db.String)
     name = db.Column(db.String(50))
     description = db.Column(db.Text())
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     votes = db.relationship('Vote', backref='pitch_vote', lazy="dynamic")
 
@@ -73,6 +74,10 @@ class Pitch(db.Model):
         self.name = name
         self.description = description
         self.owner_id = owner_id
+
+
+    def get_category(self):
+        return Category.query.get(self.category_id)
 
     def save_pitch(self):
         db.session.add(self)
@@ -134,6 +139,10 @@ class Vote(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     type = db.Column(db.String)
 
+    def update_vote(self):
+        db.session.append(self)
+        db.session.commit()
+
     def save_vote(self):
         db.session.add(self)
         db.session.commit()
@@ -147,3 +156,18 @@ class Vote(db.Model):
 
     def __repr__(self):
         return f'Vote {self.type}'
+
+
+class Category(db.Model):
+    __tablename__ = 'category'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    pitches = db.relationship('Pitch', backref='category_pitches', lazy="dynamic")
+
+    def __repr__(self):
+        return f'Category {self.name}'
+
+    def save_category(self):
+        db.session.add(self)
+        db.session.commit()

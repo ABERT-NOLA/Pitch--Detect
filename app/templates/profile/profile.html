@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import 'macros.html' as macro %}
 
 {% block content %}
     <div class="container">
@@ -35,5 +36,11 @@
                 {% endif %}
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4>My Pitches</h4>
+            </div>
+        </div>
+        {{ macro.displayPitches(pitches) }}
     </div>
 {% endblock %}
