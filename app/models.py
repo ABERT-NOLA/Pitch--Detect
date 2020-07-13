@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from flask_login import UserMixin
+from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db, login_manager
@@ -36,6 +37,7 @@ class User(UserMixin, db.Model):
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
     reviews = db.relationship('Review', backref='user', lazy="dynamic")
+    votes = db.relationship('Vote', backref='user_vote', lazy="dynamic")
 
     @property
     def password(self):
@@ -63,6 +65,7 @@ class Pitch(db.Model):
     name = db.Column(db.String(50))
     description = db.Column(db.Text())
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    votes = db.relationship('Vote', backref='pitch_vote', lazy="dynamic")
 
     # pitch = Pitch()
     # you have access to pitch.owner
@@ -106,7 +109,7 @@ class Review(db.Model):
         self.user_id = user_id
 
     id = db.Column(db.Integer, primary_key=True)
-    pitch_id = db.Column(db.Integer)
+    pitch_id = db.Column(db.Integer, db.ForeignKey("pitch.id"))
     pitch_review = db.Column(db.String)
     posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -123,3 +126,24 @@ class Review(db.Model):
     def get_reviews(cls, id):
         reviews = Review.query.filter_by(pitch_id=id).all()
         return reviews
+
+
+class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    pitch_id = db.Column(db.Integer, db.ForeignKey("pitch.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    type = db.Column(db.String)
+
+    def save_vote(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_vote_count(cls, id):
+        return db.session.query(
+            Vote.type,
+            func.count(Vote.type)
+        ).filter_by(pitch_id=id).group_by(Vote.type).all()
+
+    def __repr__(self):
+        return f'Vote {self.type}'

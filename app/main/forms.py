@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextAreaField, SubmitField, StringField
+from wtforms import TextAreaField, SubmitField, StringField, HiddenField
 from wtforms.validators import DataRequired
 
 
@@ -17,3 +17,7 @@ class PitchForm(FlaskForm):
     name = StringField('Pitch title', validators=[DataRequired()])
     description = TextAreaField('Pitch description', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+class VoteForm(FlaskForm):
+    type = HiddenField('Vote', validators=[DataRequired()])

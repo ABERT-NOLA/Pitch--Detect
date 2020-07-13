@@ -6,8 +6,8 @@ from flask_login import login_required, current_user
 
 from app import db, photos, audio
 from app.main import main
-from app.main.forms import UpdateProfile, ReviewForm, PitchForm
-from app.models import User, Pitch, Review
+from app.main.forms import UpdateProfile, ReviewForm, PitchForm, VoteForm
+from app.models import User, Pitch, Review, Vote
 
 
 @main.route('/')
@@ -78,7 +78,32 @@ def single_pitch(id):
     if pitch is None:
         abort(404)
     reviews = Review.get_reviews(pitch.id)
-    return render_template('pitch/pitch.html', pitch=pitch, reviews=reviews, reviewform=ReviewForm())
+    vote_count = Vote.get_vote_count(pitch.id)
+    vote_dict = {}
+    for type, count in vote_count:
+        vote_dict[type] = count
+    return render_template(
+        'pitch/pitch.html',
+        pitch=pitch,
+        vote_count=vote_dict,
+        reviews=reviews,
+        reviewform=ReviewForm(),
+        voteform=VoteForm()
+    )
+
+
+# =========== Pitch Vote==================
+@main.route('/pitch/<int:id>/vote', methods=['POST'])
+def pitch_vote(id):
+    pitch = Pitch.query.get(id)
+    vote = Vote.query.filter_by(user_id=current_user.id, pitch_id=pitch.id).first()
+    if not vote:
+        vote = Vote(type=vote, pitch_id=id)
+    form = VoteForm()
+    if form.validate_on_submit():
+        vote.type = form.type.data
+    vote.save_vote()
+    return redirect(url_for('.single_pitch', id=pitch.id))
 
 
 # =========== Pitch Reviews==================

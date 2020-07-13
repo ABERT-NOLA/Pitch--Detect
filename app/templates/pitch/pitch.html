@@ -39,6 +39,31 @@
                             </form>
                         {% endif %}
                     </div>
+                    <div class="panel-foooter">
+                        <ul class="nav  nav-pills">
+                            <li>
+                                <form action="{{ url_for("main.pitch_vote", id=pitch.id) }}" method="post">
+                                    <button type="submit" class="btn btn-default btn-sm btn-primary">
+                                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                                        <span>{{ vote_count.up }}</span>
+                                    </button>
+                                    {{ voteform.type(value="up") }}
+                                    {{ voteform.hidden_tag() }}
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ url_for("main.pitch_vote", id=pitch.id) }}" method="post">
+                                    <button type="submit" class="btn btn-default btn-sm btn-danger">
+                                        <span class="glyphicon glyphicon-thumbs-down"></span>
+                                        <span>{{ vote_count.down }}</span>
+                                    </button>
+                                    {{ voteform.type(value='down') }}
+                                    {{ voteform.hidden_tag() }}
+                                </form>
+                            </li>
+                        </ul>
+
+                    </div>
                 </div>
 
             </div>
